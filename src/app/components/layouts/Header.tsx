@@ -6,7 +6,7 @@ import { Heading, Flex } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 
 const header = css({
-  height: "50",
+  height: "50px",
   backgroundColor: COLORS.PRIMARY,
   color: COLORS.WHITE,
   padding: "5px 20px",
