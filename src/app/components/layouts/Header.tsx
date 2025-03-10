@@ -7,9 +7,12 @@ import { css } from "@emotion/react";
 
 const header = css({
   height: "50px",
+  width: "100vw",
   backgroundColor: COLORS.PRIMARY,
   color: COLORS.WHITE,
   padding: "5px 20px",
+  position: "fixed",
+  zIndex: "100",
 });
 
 export default function Header() {
@@ -17,7 +20,7 @@ export default function Header() {
     <header css={header}>
       <Flex justify="space-between" bg="brand.100">
         <Heading size="3xl">
-          <a href="">{SITE_TITLE}</a>
+          <a href="#">{SITE_TITLE}</a>
         </Heading>
 
         <Navigation />

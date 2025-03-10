@@ -12,6 +12,7 @@ const listbutton = css({
   margin: "10px",
   backgroundColor: COLORS.ACCENT,
   transition: "opacity 0.3s ease",
+  zIndex: 50,
 });
 
 export default function ListButton({

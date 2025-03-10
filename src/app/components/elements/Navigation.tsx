@@ -1,11 +1,7 @@
 import { Center } from "@chakra-ui/react";
 import Link from "next/link";
 import { css } from "@emotion/react";
-
-type Navigation = {
-  text: string;
-  href: string;
-};
+import type { Navigation } from "@/app/constants/interfaces";
 
 const link = css({
   "&:hover": {
@@ -15,10 +11,10 @@ const link = css({
 
 export default function Header() {
   const navigations: Navigation[] = [
-    { text: "Overview", href: "" },
-    { text: "Features", href: "" },
-    { text: "Privacy & Security", href: "" },
-    { text: "Contact", href: "" },
+    { text: "Overview", href: "#Overview" },
+    { text: "Features", href: "#Features" },
+    { text: "Privacy & Security", href: "#Privacy" },
+    { text: "Contact", href: "#Contact" },
   ];
 
   return (

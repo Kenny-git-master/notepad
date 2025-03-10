@@ -3,13 +3,13 @@ import { keyframes } from "@emotion/react";
 // スライドイン（左から表示）
 export const slideInAnimation = keyframes`
   from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(0); opacity: 1; width: 250px }
 `;
 
 // スライドアウト（左へ非表示）
 export const slideOutAnimation = keyframes`
   from { transform: translateX(0); opacity: 1; }
-  to { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(-100%); opacity: 0; width: 0 }
 `;
 
 // フェードイン

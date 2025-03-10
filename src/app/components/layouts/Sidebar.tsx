@@ -68,12 +68,12 @@ const listItems = [
   },
 ];
 
-const sidebar = css({
-  width: "250px",
-  height: "calc(100vh - 50px) ",
-  borderTop: `1px solid ${COLORS.WHITE}`,
-  borderRight: `1px solid ${COLORS.BORDER}`,
-});
+// const sidebar = css({
+//   width: "250px",
+//   height: "calc(100vh - 50px) ",
+//   borderTop: `1px solid ${COLORS.WHITE}`,
+//   borderRight: `1px solid ${COLORS.BORDER}`,
+// });
 
 const card = css({
   padding: "10px",
@@ -93,6 +93,13 @@ export default function Sidebar({
   setIsSidebarOpen,
 }: SidebarProps) {
   const [animation, setAnimation] = useState(css({ display: "none" }));
+
+  const sidebar = css({
+    width: "250px",
+    height: "calc(100vh - 50px) ",
+    borderTop: `1px solid ${COLORS.WHITE}`,
+    borderRight: `1px solid ${COLORS.BORDER}`,
+  });
 
   useEffect(() => {
     if (isSidebarOpen) {
