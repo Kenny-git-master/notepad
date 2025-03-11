@@ -20,3 +20,15 @@ export interface Contents {
   title: string;
   text: string;
 }
+
+// Memo-------------------------------------
+export interface Memo {
+  id: string;
+  title: string;
+  content: string;
+}
+
+// Search-------------------------------------
+export interface SearchProps {
+  onValueChange: (value: string) => void;
+}
