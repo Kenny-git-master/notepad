@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { css } from "@emotion/react";
-// import { Tooltip } from "@chakra-ui/react";
+import { PassEditorValue } from "@/app/constants/interfaces";
 
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -16,10 +16,10 @@ const toolbarOptions = [
   ["clean"], // remove formatting button
 ];
 
-const el = document.querySelector(".ql-bold");
-el?.addEventListener("mouseover", () => {
-  console.log("aaa");
-});
+// const el = document.querySelector(".ql-bold");
+// el?.addEventListener("mouseover", () => {
+//   console.log("aaa");
+// });
 // const quill = document.querySelector(".ql-toolbar");
 // if (quill) {
 //   const toolbarIcons = quill.querySelectorAll(".ql-format-group button");
@@ -45,10 +45,9 @@ el?.addEventListener("mouseover", () => {
 //   const label = el?.getAttribute("aria-label");
 // };
 
-export default function Editor() {
+export default function Editor({ onValueChange }: PassEditorValue) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [quill, setQuill] = useState<Quill | null>(null);
-  const [toolbarHeight, setToolbarHeight] = useState<number>(40);
 
   const isMounted = useRef(false);
 
@@ -56,7 +55,6 @@ export default function Editor() {
     if (!editorRef.current || quill) return;
 
     if (!isMounted.current) {
-      // Quillインスタンスの生成
       const quillInstance = new Quill(editorRef.current, {
         theme: "snow",
         modules: {
@@ -65,23 +63,15 @@ export default function Editor() {
       });
       setQuill(quillInstance);
 
-      // Quillヘッダーの高さ取得
-      const toolbarElement = document.querySelector(".ql-toolbar");
-      if (toolbarHeight) setToolbarHeight(toolbarElement!.clientHeight);
-
-      // const toolbarIcons = document.querySelectorAll(".ql-toolbar button");
-      // toolbarIcons.forEach((icon) => {
-      //   const label = icon.getAttribute("aria-label");
-      //   if (label) {
-      //     const tooltip = document.createElement("div");
-      //     tooltip.classList.add("chakra-tooltip");
-      //     tooltip.textContent = label;
-      //     icon.parentElement?.appendChild(tooltip);
-      //   }
-      // });
       isMounted.current = true;
+
+      quillInstance.on("text-change", () => {
+        const editorContent = quillInstance.getContents();
+        if (editorContent) onValueChange(editorContent);
+      });
     }
-  }, [quill, toolbarHeight]);
+  }, []);
+  // }, [quill, onValueChange]);
 
   const qlEditor = css({
     // Height: 100vh - Header(50px) - Title(72px) - paddingX(40px) - quillHeader

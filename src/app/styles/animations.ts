@@ -23,3 +23,12 @@ export const fadeOutAnimation = keyframes`
   from { opacity: 1; }
   to { opacity: 0; }
 `;
+
+// 保存中のアニメーション
+export const dotsAnimation = keyframes`
+  0% { content: ""; }
+  28% { content: "."; }
+  56% { content: ".."; }
+  82% { content: "..."; }
+  100%{ content: ""}
+`;

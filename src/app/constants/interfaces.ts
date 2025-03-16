@@ -1,5 +1,11 @@
+import { Delta } from "quill";
+
 // Sidebar-------------------------------------
-export interface SidebarProps {
+export interface SidebarProps extends ListButtonProps {
+  memos: Memo[];
+}
+
+export interface ListButtonProps {
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
 }
@@ -25,10 +31,19 @@ export interface Contents {
 export interface Memo {
   id: string;
   title: string;
-  content: string;
+  content: Delta | null;
+  date: Date;
 }
 
-// Search-------------------------------------
-export interface SearchProps {
+export interface EditorValue {
+  value: Delta | undefined;
+}
+
+// Search Title-------------------------------------
+export interface PassValue {
   onValueChange: (value: string) => void;
+}
+
+export interface PassEditorValue {
+  onValueChange: (value: Delta) => void;
 }
