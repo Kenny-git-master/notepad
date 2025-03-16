@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 
 import { COLORS } from "../../../styles/theme";
 import { fadeInAnimation, fadeOutAnimation } from "@/app/styles/animations";
-import { SidebarProps } from "@/app/constants/interfaces";
+import { ListButtonProps } from "@/app/constants/interfaces";
 
 const listbutton = css({
   position: "absolute",
@@ -18,7 +18,7 @@ const listbutton = css({
 export default function ListButton({
   isSidebarOpen,
   setIsSidebarOpen,
-}: SidebarProps) {
+}: ListButtonProps) {
   return (
     <Tooltip
       content="List"
