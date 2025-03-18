@@ -3,6 +3,7 @@ import { Delta } from "quill";
 // Sidebar-------------------------------------
 export interface SidebarProps extends ListButtonProps {
   memos: Memo[];
+  setMemoId: (id: string) => void;
 }
 
 export interface ListButtonProps {
@@ -40,10 +41,12 @@ export interface EditorValue {
 }
 
 // Search Title-------------------------------------
-export interface PassValue {
+export interface MemoTitle {
   onValueChange: (value: string) => void;
+  title: string;
 }
 
-export interface PassEditorValue {
+export interface MemoContent {
   onValueChange: (value: Delta) => void;
+  content: Delta | null;
 }

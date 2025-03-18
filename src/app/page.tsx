@@ -13,6 +13,7 @@ import { Memo } from "@/app/constants/interfaces";
 
 import {
   getAllMemos,
+  getMemoById,
   saveMemo,
 } from "@/app/features/editor/service/IndexedDBManagement";
 
@@ -22,7 +23,8 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [memoList, setMemoList] = useState<Memo[]>([]);
   const [memoId, setMemoId] = useState<string>("");
-  const [memo, setMemo] = useState<Memo | null>(null);
+  const [editedMemo, seteditedMemo] = useState<Memo | null>(null);
+  const [fetchedMemo, setFetchedMemo] = useState<Memo | null>(null);
 
   const showToaster = (type: ToasterType, description: string) => {
     toaster.create({
@@ -33,14 +35,26 @@ export default function Home() {
   };
 
   // 全データ取得
-  const fetchMemo = async () => {
+  const fetchMemoList = async () => {
     const data = await getAllMemos();
     setMemoList(data);
   };
 
+  // IDでデータ取得
+  const setMemoById = async (memoId: string) => {
+    const data = await getMemoById(memoId);
+    setFetchedMemo(data);
+  };
+
+  /** useEffect ------------------------------------------------- */
+  // Listクリックで対象メモを画面に表示
+  useEffect(() => {
+    setMemoById(memoId);
+  }, [memoId]);
+
   useEffect(() => {
     // マウント時にIndexedDBから取得
-    fetchMemo();
+    fetchMemoList();
   }, []);
 
   // メモ更新
@@ -49,15 +63,15 @@ export default function Home() {
       toaster.dismiss();
       showToaster("info", "Now Saving...");
 
-      if (memo) {
+      if (editedMemo) {
         toaster.dismiss();
-        await saveMemo(memo);
-        await fetchMemo();
+        await saveMemo(editedMemo);
+        await fetchMemoList();
         showToaster("success", "Saved");
       }
     };
     updateMemo();
-  }, [memo]);
+  }, [editedMemo]);
 
   return (
     <div>
@@ -73,9 +87,14 @@ export default function Home() {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
           memos={memoList}
+          setMemoId={setMemoId}
         />
         <Flex flex="1" px="20" py="5">
-          <Main memoId={memoId} setMemo={setMemo} />
+          <Main
+            memoId={memoId}
+            seteditedMemo={seteditedMemo}
+            fetchedMemo={fetchedMemo}
+          />
         </Flex>
       </Flex>
       <SubContents />
