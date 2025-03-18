@@ -11,13 +11,15 @@ import SidebarHeader from "../elements/sidebar/SidebarHeader";
 import Search from "../elements/sidebar/Search";
 import { useFilteredMemos } from "@/app/features/sidebar/hooks/useFilteredMemo";
 
-const card = css({
-  padding: "10px",
-  borderBottom: `1px solid ${COLORS.BORDER}`,
-  "&:hover": {
-    backgroundColor: COLORS.PRIMARY_LIGHT,
-  },
-});
+const card = (isSelected: boolean) =>
+  css({
+    padding: "10px",
+    borderBottom: `1px solid ${COLORS.BORDER}`,
+    backgroundColor: isSelected ? COLORS.SELECTED_LIST : "transparent",
+    "&:hover": {
+      backgroundColor: isSelected ? "" : COLORS.PRIMARY_LIGHT,
+    },
+  });
 
 const list = css({
   height: "calc(100vh - 174px) ",
@@ -28,9 +30,11 @@ export default function Sidebar({
   isSidebarOpen,
   setIsSidebarOpen,
   memos,
+  setMemoId,
 }: SidebarProps) {
   const [animation, setAnimation] = useState(css({ display: "none" }));
   const [searchString, setSearchString] = useState<string>("");
+  const [selectedMemoId, setSelectedMemoId] = useState<string | null>(null);
 
   const { filteredMemos } = useFilteredMemos(memos, searchString);
 
@@ -40,6 +44,11 @@ export default function Sidebar({
     borderTop: `1px solid ${COLORS.WHITE}`,
     borderRight: `1px solid ${COLORS.BORDER}`,
   });
+
+  const selectId = (memoId: string) => {
+    setMemoId(memoId);
+    setSelectedMemoId(memoId);
+  };
 
   // Sidebarの開閉字にアニメーション実施
   useEffect(() => {
@@ -56,16 +65,23 @@ export default function Sidebar({
         <SidebarHeader onClose={() => setIsSidebarOpen(false)} />
         <Search onValueChange={(value: string) => setSearchString(value)} />
         <div css={list}>
-          {filteredMemos.map((item, index) => (
-            <Box key={index} css={card}>
-              <div>
-                <Text fontWeight="bold">{item.title}</Text>
-                <Text textStyle="sm" truncate color={COLORS.TEXT}>
-                  {JSON.stringify(item.content?.ops[0].insert)}
-                </Text>
-              </div>
-            </Box>
-          ))}
+          {filteredMemos.map((item, index) => {
+            const isSelected = selectedMemoId === item.id;
+            return (
+              <Box
+                key={index}
+                css={card(isSelected)}
+                onClick={() => selectId(item.id)}
+              >
+                <div>
+                  <Text fontWeight="bold">{item.title}</Text>
+                  <Text textStyle="sm" truncate color={COLORS.TEXT}>
+                    {JSON.stringify(item.content?.ops[0].insert)}
+                  </Text>
+                </div>
+              </Box>
+            );
+          })}
         </div>
       </div>
 

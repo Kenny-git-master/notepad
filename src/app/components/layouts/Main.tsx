@@ -13,14 +13,16 @@ const Editor = dynamic(() => import("../elements/main/Editor"), {
 
 export default function Main({
   memoId,
-  setMemo,
+  seteditedMemo,
+  fetchedMemo,
 }: {
   memoId?: string;
-  setMemo: (value: Memo) => void;
+  seteditedMemo: (value: Memo) => void;
+  fetchedMemo: Memo | null;
 }) {
   // title
   const [id, setId] = useState<string>(memoId || getUniqueStr());
-  const [title, setTitle] = useState<string>("No Title");
+  const [title, setTitle] = useState<string>(fetchedMemo?.title || "No Title");
   const [content, setContent] = useState<Delta | null>(null);
 
   const memo: Memo = {
@@ -31,7 +33,7 @@ export default function Main({
   };
 
   const save = () => {
-    if (title || content) setMemo(memo);
+    if (title || content) seteditedMemo(memo);
   };
 
   useEffect(() => {
@@ -43,6 +45,15 @@ export default function Main({
     return () => clearTimeout(timer);
   }, [title, content]);
 
+  // memoId の変更を検知して fetchedMemo を適用
+  useEffect(() => {
+    if (fetchedMemo) {
+      setId(fetchedMemo.id);
+      setTitle(fetchedMemo.title);
+      setContent(fetchedMemo.content);
+    }
+  }, [fetchedMemo]);
+
   return (
     <Box
       width="100%"
@@ -51,8 +62,8 @@ export default function Main({
       my="20px"
       transition="width 0.3s ease-in-out"
     >
-      <Title onValueChange={setTitle} />
-      <Editor onValueChange={setContent} />
+      <Title onValueChange={setTitle} title={title} />
+      <Editor onValueChange={setContent} content={content} />
     </Box>
   );
 }

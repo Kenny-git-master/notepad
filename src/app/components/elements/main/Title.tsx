@@ -1,8 +1,8 @@
 import { Box, Input } from "@chakra-ui/react";
 import { COLORS } from "../../../styles/theme";
-import { PassValue } from "@/app/constants/interfaces";
+import { MemoTitle } from "@/app/constants/interfaces";
 
-export default function Title({ onValueChange }: PassValue) {
+export default function Title({ onValueChange, title }: MemoTitle) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     onValueChange(value);
@@ -17,6 +17,7 @@ export default function Title({ onValueChange }: PassValue) {
         rounded={0}
         borderColor={COLORS.BORDER}
         onChange={handleInputChange}
+        value={title}
       />
     </Box>
   );

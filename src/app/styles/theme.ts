@@ -5,6 +5,8 @@ export const COLORS = {
   ACCENT: "#ff6347",
   WHITE: "#ffffff",
 
+  SELECTED_LIST: "#b0d2df",
+
   BORDER: "#D6D6D6",
 
   TEXT: "#808080",
