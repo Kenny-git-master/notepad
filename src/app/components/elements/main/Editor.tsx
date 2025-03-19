@@ -92,8 +92,8 @@ export default function Editor({ onValueChange, content }: MemoContent) {
   });
 
   return (
-    <div>
+    <>
       <div ref={editorRef} css={qlEditor} />
-    </div>
+    </>
   );
 }

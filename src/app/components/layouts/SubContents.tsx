@@ -14,12 +14,12 @@ export default function SubContents() {
   return (
     <Box bg={COLORS.SECONDARY} w="full" textAlign="center" pb="50px">
       {subContents.map((content, index) => (
-        <div id={content.id} key={index} css={wrapper}>
+        <section id={content.id} key={index} css={wrapper}>
           <Text textStyle="4xl" fontWeight="bold" color={COLORS.PRIMARY}>
             {content.title}
           </Text>
           <Text textStyle="md">{content.text}</Text>
-        </div>
+        </section>
       ))}
     </Box>
   );

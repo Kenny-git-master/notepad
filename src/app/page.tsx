@@ -74,7 +74,7 @@ export default function Home() {
   }, [editedMemo]);
 
   return (
-    <div>
+    <>
       <Header />
       <Flex pt="50px">
         {!isSidebarOpen && (
@@ -99,6 +99,6 @@ export default function Home() {
       </Flex>
       <SubContents />
       <Toaster />
-    </div>
+    </>
   );
 }

@@ -61,7 +61,7 @@ export default function Sidebar({
 
   return (
     <Flex direction="column" css={[sidebar, animation]}>
-      <div>
+      <aside>
         <SidebarHeader onClose={() => setIsSidebarOpen(false)} />
         <Search onValueChange={(value: string) => setSearchString(value)} />
         <div css={list}>
@@ -83,7 +83,7 @@ export default function Sidebar({
             );
           })}
         </div>
-      </div>
+      </aside>
 
       <CustomButton />
     </Flex>
