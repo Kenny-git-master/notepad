@@ -10,6 +10,7 @@ import ListButton from "./components/elements/sidebar/ListButton";
 import Main from "./components/layouts/Main";
 import SubContents from "./components/layouts/SubContents";
 import { Memo } from "@/app/constants/interfaces";
+import { getUniqueStr } from "@/app/utils/createId";
 
 import {
   getAllMemos,
@@ -37,6 +38,19 @@ export default function Home() {
   // 全データ取得
   const fetchMemoList = async () => {
     const data = await getAllMemos();
+
+    if (!data.length) {
+      // 新しいメモを作成
+      const newMemo: Memo = {
+        id: getUniqueStr(),
+        title: "No Title",
+        content: null,
+        date: new Date(),
+      };
+      await saveMemo(newMemo);
+      setMemoList([newMemo]); // 新しいメモをリストにセット
+      setMemoId(newMemo.id); // 作成したメモのIDをセット
+    }
     setMemoList(data);
   };
 

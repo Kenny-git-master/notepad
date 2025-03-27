@@ -37,6 +37,8 @@ export default function Main({
   };
 
   useEffect(() => {
+    if (!fetchedMemo) return;
+
     const timer = setTimeout(() => {
       save();
     }, 3000);
