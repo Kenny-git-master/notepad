@@ -76,7 +76,12 @@ export default function Sidebar({
                 <div>
                   <Text fontWeight="bold">{item.title}</Text>
                   <Text textStyle="sm" truncate color={COLORS.TEXT}>
-                    {JSON.stringify(item.content?.ops[0].insert)}
+                    {JSON.stringify(
+                      item.content?.ops
+                        .map((op) => op.insert)
+                        .join("")
+                        .replace(/\n/g, " ")
+                    )}
                   </Text>
                 </div>
               </Box>
