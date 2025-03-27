@@ -63,11 +63,16 @@ export default function Home() {
       toaster.dismiss();
       showToaster("info", "Now Saving...");
 
-      if (editedMemo) {
-        toaster.dismiss();
-        await saveMemo(editedMemo);
-        await fetchMemoList();
-        showToaster("success", "Saved");
+      try {
+        if (editedMemo) {
+          toaster.dismiss();
+          await saveMemo(editedMemo);
+          await fetchMemoList();
+          showToaster("success", "Saved");
+        }
+      } catch (error) {
+        console.error("Failed to save memo:", error);
+        showToaster("error", "Failed to save memo");
       }
     };
     updateMemo();
