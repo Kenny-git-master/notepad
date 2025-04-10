@@ -4,6 +4,7 @@ import { Delta } from "quill";
 export interface SidebarProps extends ListButtonProps {
   memos: Memo[];
   setMemoId: (id: string) => void;
+  setIsModalOpen: (bool: boolean) => void;
 }
 
 export interface ListButtonProps {
