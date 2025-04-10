@@ -9,18 +9,21 @@ import Sidebar from "./components/layouts/Sidebar";
 import ListButton from "./components/elements/sidebar/ListButton";
 import Main from "./components/layouts/Main";
 import SubContents from "./components/layouts/SubContents";
+import Modal from "./components/elements/Modal";
 import { Memo } from "@/app/constants/interfaces";
 
 import {
   getAllMemos,
   getMemoById,
   saveMemo,
+  deleteMemo,
 } from "@/app/features/editor/service/IndexedDBManagement";
 
 type ToasterType = "success" | "error" | "warning" | "info";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [memoList, setMemoList] = useState<Memo[]>([]);
   const [memoId, setMemoId] = useState<string>("");
   const [editedMemo, seteditedMemo] = useState<Memo | null>(null);
@@ -88,6 +91,7 @@ export default function Home() {
           setIsSidebarOpen={setIsSidebarOpen}
           memos={memoList}
           setMemoId={setMemoId}
+          setIsModalOpen={setIsModalOpen}
         />
         <Flex flex="1" px="20" py="5">
           <Main
@@ -99,6 +103,17 @@ export default function Home() {
       </Flex>
       <SubContents />
       <Toaster />
+      {isModalOpen && (
+        <Modal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          onConfirm={() => {
+            deleteMemo(memoId);
+            fetchMemoList();
+            setIsModalOpen(false);
+          }}
+        />
+      )}
     </>
   );
 }

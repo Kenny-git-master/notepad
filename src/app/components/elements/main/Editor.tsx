@@ -15,35 +15,6 @@ const toolbarOptions = [
   ["clean"], // remove formatting button
 ];
 
-// const el = document.querySelector(".ql-bold");
-// el?.addEventListener("mouseover", () => {
-//   console.log("aaa");
-// });
-// const quill = document.querySelector(".ql-toolbar");
-// if (quill) {
-//   const toolbarIcons = quill.querySelectorAll(".ql-format-group button");
-
-//   toolbarIcons.forEach((icon) => {
-//     const label = icon.getAttribute("aria-label");
-//     if (label) {
-//       const tooltip = document.createElement("div");
-//       tooltip.classList.add("chakra-tooltip");
-//       tooltip.setAttribute("data-tooltip", label);
-//       icon.parentElement?.appendChild(tooltip);
-//     }
-//   });
-// }
-
-/**
- *
- * @param className : クラス名
- * @description Add tooltips to Quill header icons
- */
-// const addTooltip = (className: string) => {
-//   const el = document.querySelector(className);
-//   const label = el?.getAttribute("aria-label");
-// };
-
 export default function Editor({ onValueChange, content }: MemoContent) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [quill, setQuill] = useState<Quill | null>(null);

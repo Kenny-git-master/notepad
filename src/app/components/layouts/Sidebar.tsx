@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import { Flex, Text, Box } from "@chakra-ui/react";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { COLORS } from "../../styles/theme";
 import { slideInAnimation, slideOutAnimation } from "@/app/styles/animations";
@@ -31,6 +32,7 @@ export default function Sidebar({
   setIsSidebarOpen,
   memos,
   setMemoId,
+  setIsModalOpen,
 }: SidebarProps) {
   const [animation, setAnimation] = useState(css({ display: "none" }));
   const [searchString, setSearchString] = useState<string>("");
@@ -44,10 +46,21 @@ export default function Sidebar({
     borderTop: `1px solid ${COLORS.WHITE}`,
     borderRight: `1px solid ${COLORS.BORDER}`,
   });
+  const deleteIcon = css({
+    color: COLORS.PRIMARY_DARK,
+    "&:hover": {
+      color: COLORS.WARNING,
+    },
+  });
 
   const selectId = (memoId: string) => {
     setMemoId(memoId);
     setSelectedMemoId(memoId);
+  };
+
+  const deleteMemo = (memoId: string) => {
+    setMemoId(memoId);
+    setIsModalOpen(true);
   };
 
   // Sidebarの開閉字にアニメーション実施
@@ -73,17 +86,23 @@ export default function Sidebar({
                 css={card(isSelected)}
                 onClick={() => selectId(item.id)}
               >
-                <div>
-                  <Text fontWeight="bold">{item.title}</Text>
-                  <Text textStyle="sm" truncate color={COLORS.TEXT}>
-                    {JSON.stringify(
-                      item.content?.ops
-                        .map((op) => op.insert)
-                        .join("")
-                        .replace(/\n/g, " ")
-                    )}
-                  </Text>
-                </div>
+                <Flex justify="space-between" align="center">
+                  <Box maxW="200px">
+                    <Text fontWeight="bold">{item.title}</Text>
+                    <Text textStyle="sm" truncate color={COLORS.TEXT}>
+                      {JSON.stringify(
+                        item.content?.ops
+                          .map((op) => op.insert)
+                          .join("")
+                          .replace(/\n/g, " ")
+                      )}
+                    </Text>
+                  </Box>
+                  <DeleteIcon
+                    css={deleteIcon}
+                    onClick={() => deleteMemo(item.id)}
+                  />
+                </Flex>
               </Box>
             );
           })}
