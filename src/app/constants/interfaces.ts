@@ -42,6 +42,10 @@ export interface EditorValue {
 }
 
 // Search Title-------------------------------------
+export interface SearchProps {
+  onValueChange: (value: string) => void;
+}
+
 export interface MemoTitle {
   onValueChange: (value: string) => void;
   title: string;

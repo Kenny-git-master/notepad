@@ -2,7 +2,7 @@ import { Input } from "@chakra-ui/react";
 import { InputGroup } from "@/components/ui/input-group";
 import SearchIcon from "@mui/icons-material/Search";
 import { css } from "@emotion/react";
-import { PassValue } from "@/app/constants/interfaces";
+import { SearchProps } from "@/app/constants/interfaces";
 
 const search = css({
   width: "100%",
@@ -12,7 +12,7 @@ const searchIcon = css({
   paddingRight: "4px",
 });
 
-export default function Search({ onValueChange }: PassValue) {
+export default function Search({ onValueChange }: SearchProps) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     onValueChange(value);
