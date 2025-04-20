@@ -13,6 +13,7 @@ const toolbarOptions = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ align: [] }],
   ["clean"], // remove formatting button
+  ["markdown"],
 ];
 
 export default function Editor({ onValueChange, content }: MemoContent) {
@@ -21,6 +22,16 @@ export default function Editor({ onValueChange, content }: MemoContent) {
 
   const isMounted = useRef(false);
 
+  const icons = Quill.import("ui/icons") as Record<string, string>;
+  icons["markdown"] = `
+    <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+      <path d="M7 15v-6l2 2l2 -2v6" />
+      <path d="M14 13l2 2l2 -2m-2 2v-6" />
+    </svg>
+  `;
+
   useEffect(() => {
     if (!editorRef.current || quill) return;
 
@@ -28,9 +39,17 @@ export default function Editor({ onValueChange, content }: MemoContent) {
       const quillInstance = new Quill(editorRef.current, {
         theme: "snow",
         modules: {
-          toolbar: toolbarOptions,
+          toolbar: {
+            container: toolbarOptions,
+            handlers: {
+              markdown: function () {
+                console.log("markdown");
+              },
+            },
+          },
         },
       });
+
       setQuill(quillInstance);
 
       isMounted.current = true;
