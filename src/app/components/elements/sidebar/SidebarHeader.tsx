@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { COLORS } from "../../../styles/theme";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import { IconButton } from "@chakra-ui/react";
+import IconButton from "@mui/material/IconButton";
 
 import { SidebarHeaderProps } from "@/app/constants/interfaces";
 
@@ -24,7 +24,7 @@ const closeIcon = css({
 export default function SidebarHeader({ onClose }: SidebarHeaderProps) {
   return (
     <div css={header}>
-      <IconButton size="xs" variant="ghost" css={iconButton} onClick={onClose}>
+      <IconButton css={iconButton} onClick={onClose}>
         <KeyboardDoubleArrowLeftIcon css={closeIcon} />
       </IconButton>
     </div>

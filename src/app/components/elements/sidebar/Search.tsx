@@ -1,15 +1,12 @@
-import { Input } from "@chakra-ui/react";
-import { InputGroup } from "@/components/ui/input-group";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { css } from "@emotion/react";
 import { SearchProps } from "@/app/constants/interfaces";
+import { Divider } from "@mui/material";
 
 const search = css({
-  width: "100%",
-});
-const searchIcon = css({
-  marginLeft: "8px",
-  paddingRight: "4px",
+  margin: "15px 5px",
 });
 
 export default function Search({ onValueChange }: SearchProps) {
@@ -19,15 +16,24 @@ export default function Search({ onValueChange }: SearchProps) {
   };
 
   return (
-    <InputGroup startElement={<SearchIcon css={searchIcon} />} css={search}>
-      <Input
-        _focus={{
-          boxShadow: "none",
-        }}
-        variant="flushed"
+    <>
+      <TextField
+        css={search}
         placeholder="Search Title"
+        variant="standard"
+        size="small"
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          },
+        }}
         onChange={handleInputChange}
       />
-    </InputGroup>
+      <Divider />
+    </>
   );
 }

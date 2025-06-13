@@ -1,4 +1,4 @@
-import { Center } from "@chakra-ui/react";
+import Stack from "@mui/material/Stack";
 import Link from "next/link";
 import { css } from "@emotion/react";
 import type { Navigation } from "@/app/constants/interfaces";
@@ -18,12 +18,12 @@ export default function Header() {
   ];
 
   return (
-    <Center gap="20px">
+    <Stack direction="row" spacing={2}>
       {navigations.map((nav, index) => (
         <Link css={link} key={index} href={nav.href}>
           {nav.text}
         </Link>
       ))}
-    </Center>
+    </Stack>
   );
 }

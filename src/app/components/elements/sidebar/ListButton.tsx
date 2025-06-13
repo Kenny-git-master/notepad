@@ -1,5 +1,4 @@
-import { IconButton } from "@chakra-ui/react";
-import { Tooltip } from "@/components/ui/tooltip";
+import { IconButton, Tooltip } from "@mui/material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { css } from "@emotion/react";
 
@@ -9,10 +8,14 @@ import { ListButtonProps } from "@/app/constants/interfaces";
 
 const listbutton = css({
   position: "absolute",
-  margin: "10px",
+  margin: "60px 10px",
   backgroundColor: COLORS.ACCENT,
   transition: "opacity 0.3s ease",
+  color: "#fff",
   zIndex: 50,
+  "&:hover": {
+    backgroundColor: COLORS.ACCENT_SECONDARY,
+  },
 });
 
 export default function ListButton({
@@ -20,17 +23,8 @@ export default function ListButton({
   setIsSidebarOpen,
 }: ListButtonProps) {
   return (
-    <Tooltip
-      content="List"
-      openDelay={100}
-      closeDelay={100}
-      contentProps={{ px: 4, py: 2, bg: "gray.600" }}
-      positioning={{
-        placement: "right",
-      }}
-    >
+    <Tooltip title="List">
       <IconButton
-        rounded="full"
         css={[
           listbutton,
           css({

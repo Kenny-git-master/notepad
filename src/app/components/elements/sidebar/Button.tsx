@@ -1,27 +1,45 @@
-import { Button, Stack, Text, Center } from "@chakra-ui/react";
+import { Button, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { css } from "@emotion/react";
 import { COLORS } from "../../../styles/theme";
 
+const buttonWrapper = css({
+  position: "absolute",
+  bottom: "10px",
+  left: "50%",
+  transform: "translateX(-50%)",
+});
 const button = css({
   backgroundColor: COLORS.ACCENT,
-  padding: "5px 30px",
-  margin: "10px",
-  bottom: "0",
-  position: "absolute",
+  color: "white",
+  padding: "10px 30px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  whiteSpace: "nowrap",
+  gap: "5px",
+  "&:hover": {
+    backgroundColor: COLORS.ACCENT_SECONDARY,
+  },
+});
+const buttonTitle = css({
+  fontWeight: "var(--font-weight-semibold)",
 });
 
-export default function CustomButton() {
+type CustomButtonProps = {
+  onClick: () => void;
+};
+
+export default function CustomButton({ onClick }: CustomButtonProps) {
   return (
-    <Stack>
-      <Center>
-        <Button css={button}>
-          <Text textStyle="lg" fontWeight="semibold">
-            Create New
-          </Text>
-          <ControlPointIcon />
-        </Button>
-      </Center>
-    </Stack>
+    <Box css={buttonWrapper}>
+      <Button css={button} onClick={onClick}>
+        <Typography align="center" css={buttonTitle}>
+          Create New
+        </Typography>
+        <ControlPointIcon />
+      </Button>
+    </Box>
   );
 }
