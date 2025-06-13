@@ -1,5 +1,5 @@
-import { COLORS } from "../../styles/theme";
-import { Box, Text } from "@chakra-ui/react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { css } from "@emotion/react";
 
 import { subContents } from "../../constants/subcontents";
@@ -12,13 +12,11 @@ export default function SubContents() {
   });
 
   return (
-    <Box bg={COLORS.SECONDARY} w="full" textAlign="center" pb="50px">
+    <Box>
       {subContents.map((content, index) => (
         <section id={content.id} key={index} css={wrapper}>
-          <Text textStyle="4xl" fontWeight="bold" color={COLORS.PRIMARY}>
-            {content.title}
-          </Text>
-          <Text textStyle="md">{content.text}</Text>
+          <Typography>{content.title}</Typography>
+          <Typography>{content.text}</Typography>
         </section>
       ))}
     </Box>

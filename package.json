@@ -11,10 +11,11 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.16.0",
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.6",
+    "@mui/material-nextjs": "^7.0.2",
     "@storybook/addon-themes": "^8.6.12",
     "dompurify": "^3.2.4",
     "next": "^15.3.0",
