@@ -1,7 +1,7 @@
 // import React from "react";
 import { SITE_TITLE } from "@/app/constants/siteConfig";
 import { COLORS } from "../../styles/theme";
-import Navigation from "@/app/components/elements/Navigation";
+// import Navigation from "@/app/components/elements/Navigation";
 import Typography from "@mui/material/Typography";
 import { css } from "@emotion/react";
 
@@ -30,7 +30,7 @@ export default function Header() {
         <a href="#">{SITE_TITLE}</a>
       </Typography>
 
-      <Navigation />
+      {/* <Navigation /> */}
     </header>
   );
 }
