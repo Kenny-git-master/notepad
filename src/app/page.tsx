@@ -2,14 +2,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Flex } from "@chakra-ui/react";
-import { Toaster, toaster } from "@/components/ui/toaster";
+import Snackbar from "@mui/material/Snackbar";
 import Header from "./components/layouts/Header";
 import Sidebar from "./components/layouts/Sidebar";
 import ListButton from "./components/elements/sidebar/ListButton";
 import Main from "./components/layouts/Main";
-import SubContents from "./components/layouts/SubContents";
-import Modal from "./components/elements/Modal";
+// import SubContents from "./components/layouts/SubContents";
+import ConfirmModal from "./components/elements/Modal";
 import { Memo } from "@/app/constants/interfaces";
 
 import {
@@ -18,35 +17,35 @@ import {
   saveMemo,
   deleteMemo,
 } from "@/app/features/editor/service/IndexedDBManagement";
-
-type ToasterType = "success" | "error" | "warning" | "info";
+import { SnackbarContent, Stack } from "@mui/material";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [memoList, setMemoList] = useState<Memo[]>([]);
   const [memoId, setMemoId] = useState<string>("");
-  const [editedMemo, seteditedMemo] = useState<Memo | null>(null);
+  const [editedMemo, setEditedMemo] = useState<Memo | null>(null);
   const [fetchedMemo, setFetchedMemo] = useState<Memo | null>(null);
-
-  const showToaster = (type: ToasterType, description: string) => {
-    toaster.create({
-      description: description,
-      type: type,
-      duration: 3000,
-    });
-  };
+  const [isOpenSnackbar, setIsOpenSnackbar] = useState<boolean>(false);
 
   // 全データ取得
   const fetchMemoList = async () => {
     const data = await getAllMemos();
     setMemoList(data);
+
+    if (data.length > 0 && !memoId) {
+      setMemoId(data[0].id);
+    }
   };
 
   // IDでデータ取得
   const setMemoById = async (memoId: string) => {
     const data = await getMemoById(memoId);
     setFetchedMemo(data);
+  };
+
+  const handleCloseSnackbar = () => {
+    setIsOpenSnackbar(false);
   };
 
   /** useEffect ------------------------------------------------- */
@@ -63,48 +62,52 @@ export default function Home() {
   // メモ更新
   useEffect(() => {
     const updateMemo = async () => {
-      toaster.dismiss();
-      showToaster("info", "Now Saving...");
-
       if (editedMemo) {
-        toaster.dismiss();
         await saveMemo(editedMemo);
         await fetchMemoList();
-        showToaster("success", "Saved");
       }
     };
+
     updateMemo();
   }, [editedMemo]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isOpenSnackbar) setIsOpenSnackbar(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [isOpenSnackbar]);
 
   return (
     <>
       <Header />
-      <Flex pt="50px">
-        {!isSidebarOpen && (
+      <Stack direction={"row"}>
+        {isSidebarOpen ? (
+          <Sidebar
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            memos={memoList}
+            setMemoId={setMemoId}
+            setIsModalOpen={setIsModalOpen}
+          />
+        ) : (
           <ListButton
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
           />
         )}
-        <Sidebar
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-          memos={memoList}
-          setMemoId={setMemoId}
-          setIsModalOpen={setIsModalOpen}
+        <Main
+          memoId={memoId}
+          setEditedMemo={setEditedMemo}
+          fetchedMemo={fetchedMemo}
+          setIsOpenSnackbar={setIsOpenSnackbar}
         />
-        <Flex flex="1" px="20" py="5">
-          <Main
-            memoId={memoId}
-            seteditedMemo={seteditedMemo}
-            fetchedMemo={fetchedMemo}
-          />
-        </Flex>
-      </Flex>
-      <SubContents />
-      <Toaster />
+      </Stack>
+      {/* <SubContents /> */}
+
       {isModalOpen && (
-        <Modal
+        <ConfirmModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           onConfirm={() => {
@@ -114,6 +117,20 @@ export default function Home() {
           }}
         />
       )}
+
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={isOpenSnackbar}
+        onClose={handleCloseSnackbar}
+      >
+        <SnackbarContent
+          message="saiving..."
+          style={{
+            borderRadius: "4px",
+            backgroundColor: "teal",
+          }}
+        />
+      </Snackbar>
     </>
   );
 }

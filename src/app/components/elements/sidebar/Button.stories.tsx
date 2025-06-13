@@ -10,5 +10,9 @@ export default meta;
 type Story = StoryObj<typeof CustomButton>;
 
 export const Default: Story = {
-  render: () => <CustomButton />,
+  args: {
+    onClick: () => {
+      console.log("Button clicked!");
+    },
+  },
 };

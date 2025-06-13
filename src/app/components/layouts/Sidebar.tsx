@@ -1,56 +1,77 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { css } from "@emotion/react";
-import { Flex, Text, Box } from "@chakra-ui/react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import { COLORS } from "../../styles/theme";
-import { slideInAnimation, slideOutAnimation } from "@/app/styles/animations";
+// import { slideInAnimation, slideOutAnimation } from "@/app/styles/animations";
 import { SidebarProps } from "@/app/constants/interfaces";
 
 import CustomButton from "../elements/sidebar/Button";
 import SidebarHeader from "../elements/sidebar/SidebarHeader";
 import Search from "../elements/sidebar/Search";
 import { useFilteredMemos } from "@/app/features/sidebar/hooks/useFilteredMemo";
-
-const card = (isSelected: boolean) =>
-  css({
-    padding: "10px",
-    borderBottom: `1px solid ${COLORS.BORDER}`,
-    backgroundColor: isSelected ? COLORS.SELECTED_LIST : "transparent",
-    "&:hover": {
-      backgroundColor: isSelected ? "" : COLORS.PRIMARY_LIGHT,
-    },
-  });
-
-const list = css({
-  height: "calc(100vh - 174px) ",
-  overflowY: "scroll",
-});
+import { Divider } from "@mui/material";
+import { getUniqueStr } from "@/app/utils/createId";
 
 export default function Sidebar({
-  isSidebarOpen,
+  // isSidebarOpen,
   setIsSidebarOpen,
   memos,
   setMemoId,
   setIsModalOpen,
 }: SidebarProps) {
-  const [animation, setAnimation] = useState(css({ display: "none" }));
+  // const [animation, setAnimation] = useState(css({ display: "none" }));
   const [searchString, setSearchString] = useState<string>("");
   const [selectedMemoId, setSelectedMemoId] = useState<string | null>(null);
 
   const { filteredMemos } = useFilteredMemos(memos, searchString);
 
+  const title = css({
+    fontWeight: "var(--font-weight-semibold)",
+  });
+
   const sidebar = css({
     width: "250px",
     height: "calc(100vh - 50px) ",
+    marginTop: "50px",
     borderTop: `1px solid ${COLORS.WHITE}`,
     borderRight: `1px solid ${COLORS.BORDER}`,
+    position: "relative",
   });
+
   const deleteIcon = css({
     color: COLORS.PRIMARY_DARK,
     "&:hover": {
       color: COLORS.WARNING,
     },
+  });
+
+  const card = (isSelected: boolean) =>
+    css({
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "10px",
+      borderBottom: `1px solid ${COLORS.BORDER}`,
+      backgroundColor: isSelected ? COLORS.SELECTED_LIST : "transparent",
+      "&:hover": {
+        backgroundColor: isSelected ? "" : COLORS.PRIMARY_LIGHT,
+      },
+    });
+
+  const list = css({
+    height: "calc(100vh - 201px) ",
+    overflowY: "scroll",
+  });
+
+  const ellipsis = css({
+    fontSize: "var(--font-size-xs)",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    maxWidth: "190px",
   });
 
   const selectId = (memoId: string) => {
@@ -63,18 +84,23 @@ export default function Sidebar({
     setIsModalOpen(true);
   };
 
+  const handleCreateNewMemo = () => {
+    const newId = getUniqueStr();
+    setMemoId(newId);
+  };
+
   // Sidebarの開閉字にアニメーション実施
-  useEffect(() => {
-    if (isSidebarOpen) {
-      setAnimation(css({ animation: `${slideInAnimation} 0.3s forwards` }));
-    } else {
-      setAnimation(css({ animation: `${slideOutAnimation} 0.3s forwards` }));
-    }
-  }, [isSidebarOpen]);
+  // useEffect(() => {
+  //   if (isSidebarOpen) {
+  //     setAnimation(css({ animation: `${slideInAnimation} 0.3s forwards` }));
+  //   } else {
+  //     setAnimation(css({ animation: `${slideOutAnimation} 0.3s forwards` }));
+  //   }
+  // }, [isSidebarOpen]);
 
   return (
-    <Flex direction="column" css={[sidebar, animation]}>
-      <aside>
+    <>
+      <aside css={sidebar}>
         <SidebarHeader onClose={() => setIsSidebarOpen(false)} />
         <Search onValueChange={(value: string) => setSearchString(value)} />
         <div css={list}>
@@ -86,30 +112,28 @@ export default function Sidebar({
                 css={card(isSelected)}
                 onClick={() => selectId(item.id)}
               >
-                <Flex justify="space-between" align="center">
-                  <Box maxW="200px">
-                    <Text fontWeight="bold">{item.title}</Text>
-                    <Text textStyle="sm" truncate color={COLORS.TEXT}>
-                      {JSON.stringify(
-                        item.content?.ops
-                          .map((op) => op.insert)
-                          .join("")
-                          .replace(/\n/g, " ")
-                      )}
-                    </Text>
-                  </Box>
-                  <DeleteIcon
-                    css={deleteIcon}
-                    onClick={() => deleteMemo(item.id)}
-                  />
-                </Flex>
+                <Box>
+                  <Typography css={title}>{item.title}</Typography>
+                  <Typography color={COLORS.TEXT} css={ellipsis}>
+                    {JSON.stringify(
+                      item.content?.ops
+                        .map((op) => op.insert)
+                        .join("")
+                        .replace(/\n/g, " ")
+                    )}
+                  </Typography>
+                </Box>
+                <DeleteIcon
+                  css={deleteIcon}
+                  onClick={() => deleteMemo(item.id)}
+                />
               </Box>
             );
           })}
         </div>
+        <Divider />
+        <CustomButton onClick={handleCreateNewMemo} />
       </aside>
-
-      <CustomButton />
-    </Flex>
+    </>
   );
 }
